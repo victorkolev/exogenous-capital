@@ -412,7 +412,21 @@ if(number_of_plots>2)
     exogenousCompare <- merge.xts(exogenousCompare, exogenousReturn[[i]], all=FALSE)
   }
 }
-plot.xts(exogenousCompare)
+plot.xts(exogenousCompare, main="Return of the factor-mimicking portfolios of the exogenous factor (in %)",
+         col=c("#000000", "#bb1f1f", "#2E29A1","#217633" ), lwd=c(3,2,2,2))
+par(font=2)
+addLegend("topleft", legend.names = c( "1Q delay; 2.822625",
+                                       "2Q delay; 3.38642",
+                                       "3Q delay; 2.752286",
+                                       "4Q delay; 2.703047"), 
+          lty=c(1,1, 1,1), lwd=c(2, 2, 2, 2),
+          col=c( "#000000", "#bb1f1f", "#2E29A1","#217633" ), y.intersp=0.5)
+
+
+library(PerformanceAnalytics)
+for (i in 1:number_of_plots) {
+  print(SharpeRatio(exogenousReturn[[i]], 0, FUN="StdDev"))
+}
 
 
 
