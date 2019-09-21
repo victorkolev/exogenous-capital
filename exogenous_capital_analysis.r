@@ -66,7 +66,7 @@ is.exogenous<-function(x){
 SF1<-read.csv("SF1.csv", stringsAsFactors = FALSE)  # Core US Fundamentals (to get debt/equity ratio and number of shares)
 tickers<-read.csv("TICKERS.csv", stringsAsFactors = FALSE)  # Tickers and Metadata (to get the industy sector) 
 DAILY<-read.csv("DAILY.csv", stringsAsFactors = FALSE)  #Daily Metrics (to get daily values for market capitalization and price-to-book ratio)
-SEP<-read.csv("SEP.csv", stringsAsFactors = FALSE)
+SEP<-read.csv("SEP.csv", stringsAsFactors = FALSE)  # Equity Prices
 
 
 #Exract only the necessary data (only quarterly data)
@@ -387,10 +387,8 @@ exoReturn<-lapply(1:number_of_delays, function(x){
                          priceList[[prev_i]][which(priceList[[prev_i]]$date==dates[date_index-1]), c("ticker", "smb", "hml")])
     df<-data.frame(df, row.names = "ticker")
     df<-na.omit(df)
-    #df$return <- scale(df$return)
     df$smb<-normalize(df$smb)
     df$hml<-normalize(df$hml)
-    #df$return<-normalize(df$return)
     l<-lm(return~exo+beta+quality+smb+hml+mom, df)
     return(as.numeric(coeftest(l, vcovHC(l))[2,1]))
   }))
